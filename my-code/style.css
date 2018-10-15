@@ -1,14 +1,20 @@
 #container {
 	top: 30px;
 	font-size: 0;
-	height:960px;
-	width:960px;
+	height:600px;
+	width:600px;
 }
 
 .grid {
 	border:none;
 	outline:1px solid #000;
 	display:inline-block;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+  background-color: white;
+}
+
+
+.active {
+  background-image: url("images/droopy_detective.jpg");
 }
