@@ -17,4 +17,7 @@
 
 .active {
   background-image: url("images/droopy_detective.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
