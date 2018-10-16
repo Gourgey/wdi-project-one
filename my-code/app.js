@@ -1,5 +1,13 @@
 // make a grid
 const myContainer = document.querySelector('#container');
+const scoreBoard = document.getElementById('myScore');
+
+let myScore = 0;
+
+function updateScore() {
+  myScore ++;
+  scoreBoard.textContent = 'Score: ' + myScore;
+}
 
 
 function createGrid(x) {
@@ -17,12 +25,47 @@ function createGrid(x) {
   // $('.grid').height(960/x);
 }
 
-createGrid(10);
+createGrid(12);
+
+const wallRowsTop = 0;
+const wallRowsBottom = 11;
+const wallColumnsLeft = 0;
+const wallColumnsRight = 11;
+
+
+// const rest = document.querySelectorAll
+const wallRowTop = document.querySelectorAll(`div[rowid="${wallRowsTop}"]`);
+const wallRowBottom = document.querySelectorAll(`div[rowid="${wallRowsBottom}"]`);
+const wallColumnLeft = document.querySelectorAll(`div[columnid="${wallColumnsLeft}"]`);
+const wallColumnRight = document.querySelectorAll(`div[columnid="${wallColumnsRight}"]`);
+
+for (let i = 0; i < wallRowTop.length; i++) {
+  wallRowTop[i].classList.add('wall');
+}
+
+for (let i = 0; i < wallRowBottom.length; i++) {
+  wallRowBottom[i].classList.add('wall');
+}
+
+for (let i = 0; i < wallColumnLeft.length; i++) {
+  wallColumnLeft[i].classList.add('wall');
+}
+
+for (let i = 0; i < wallColumnRight.length; i++) {
+  wallColumnRight[i].classList.add('wall');
+}
+
+
+// for (let i = 0; i < rest.length; i++) {
+//   rest[i].classList.add('wall');
+// }
+
+
 
 // this needs to keep track of the previous position and remove it
 
 const myPlayerSpot = {
-  row: 0,
+  row: 1,
   column: 8
 };
 
@@ -31,6 +74,30 @@ const myCrateSpot = {
   row: 5,
   column: 6
 };
+
+class Crate {
+  constructor(row, column) {
+    this.row = row;
+    this.column = column;
+  }
+}
+
+const crates = [
+  new Crate(5, 6),
+  new Crate(2, 3)
+];
+
+
+// const myCrateSpot = [{
+//   row: 5,
+//   column: 6
+// },{
+//   row: 5,
+//   column: 6
+// },{
+//   row: 5,
+//   column: 6
+// }];
 
 
 const myHoleSpot = {
@@ -42,16 +109,14 @@ const myHoleSpot = {
 // for tracking the characters and all, make a variable that you use in your dom.
 // get the div for the character with the following variables then change the colour to red and give it a class of active for the image.
 let currentCharacterPosition = document.querySelector(`div[rowid="${myPlayerSpot.row}"][columnid="${myPlayerSpot.column}"]`);
-// currentCharacterPosition.classList.add('active');
-console.log(currentCharacterPosition);
-currentCharacterPosition.style.backgroundColor = 'red';
+currentCharacterPosition.classList.add('active');
 
 // get the div for the crate, colour it green and make it a let so you can reassign the let to another div.
 let currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-currentCratePosition.style.backgroundColor = 'green';
+currentCratePosition.classList.add('active');
 
 // get the div for the hole and colour it black.
-let currentHolePosition = document.querySelector(`div[rowid="${myHoleSpot.row}"][columnid="${myHoleSpot.column}"]`);
+const currentHolePosition = document.querySelector(`div[rowid="${myHoleSpot.row}"][columnid="${myHoleSpot.column}"]`);
 currentHolePosition.style.backgroundColor = 'black';
 
 
@@ -59,20 +124,29 @@ currentHolePosition.style.backgroundColor = 'black';
 function moveColor() {
   // gets rid of current square colour then by reassigning takes new vairable values (from keydown listener) to make a new div colour with red.
   currentCharacterPosition.style.backgroundColor = 'white';
+  currentCharacterPosition.classList.remove('active');
   currentCharacterPosition = document.querySelector(`div[rowid="${myPlayerSpot.row}"][columnid="${myPlayerSpot.column}"]`);
-  currentCharacterPosition.style.backgroundColor = 'red';
+  currentCharacterPosition.classList.add('active');
+  currentCharacterPosition.style.backgroundColor = 'white';
 }
 
 
 
+
+// KEYPRESSING FUNCTIONS
 window.addEventListener('keydown', function(e) {
   // console.log(e.which);
   if (e.which === 38) {
-    event.preventdefault;
+    e.preventDefault();
 
     // stops character moving onto crate when crate is at wall and allows code to run otherwise.
-    if (myCrateSpot.row === 0
-      && myPlayerSpot.row === 1
+    crates.forEach(crate => {
+      if (crate.row === 1 && myPlayerSpot.row === 2) {
+        console.log('hello');
+      }
+    });
+    if (myCrateSpot.row === 1
+      && myPlayerSpot.row === 2
       && myCrateSpot.column === myPlayerSpot.column) {
       console.log('dont move!');
     } else {
@@ -81,12 +155,12 @@ window.addEventListener('keydown', function(e) {
 
 
       //stops character going over the edge - cant be === 0 becuase the ++ will make it row 1.
-      if (myPlayerSpot.row === -1) {
+      if (myPlayerSpot.row === 0) {
         myPlayerSpot.row ++;
       }
 
 
-      // gets rid of current square colour then by reassigning takes new vairable values (from keydown listener) to make a new div colour with red.
+      // updates character position and gets rid of current square colour then by reassigning takes new vairable values (from keydown listener) to make a new div colour with red.
       moveColor();
 
 
@@ -96,7 +170,7 @@ window.addEventListener('keydown', function(e) {
         // moves in character direction - when character moves onto crate (code above) - moves crate up and makes new square the current square then makes it green.
         myCrateSpot.row --;
 
-        // don't need to turn this square white as the charater will take over then to white when it leaves.
+        // updates position of crate by reassigning the var with the updated spot row and columns -- don't need to turn this square white as the charater will take over then to white when it leaves.
         currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
         currentCratePosition.style.backgroundColor = 'green';
       }
@@ -107,18 +181,28 @@ window.addEventListener('keydown', function(e) {
     if (myCrateSpot.row === myHoleSpot.row
        && myCrateSpot.column === myHoleSpot.column) {
       currentHolePosition.style.backgroundColor = 'black';
-      myCrateSpot.row -= myHoleSpot.row;
-      myCrateSpot.column -= myHoleSpot.column;
+      myCrateSpot.row -= (myHoleSpot.row - 2);
+      myCrateSpot.column -= (myHoleSpot.column - 2);
       currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
       currentCratePosition.style.backgroundColor = 'green';
+      updateScore();
+    }
+
+    // if the player moves onto the hole, it retracts that movement and uses moveColor() to reassign the spot of the player aswell as
+    // ----- changing its colour back. It also returns the colour of the hole to black.
+    if (myPlayerSpot.row === myHoleSpot.row
+       && myPlayerSpot.column === myHoleSpot.column) {
+      myPlayerSpot.row ++;
+      moveColor();
+      currentHolePosition.style.backgroundColor = 'black';
     }
 
 
   } else if (e.which === 40) {
-    event.preventdefault;
+    e.preventDefault();
 
-    if (myCrateSpot.row === 9
-      && myPlayerSpot.row === 8
+    if (myCrateSpot.row === 10
+      && myPlayerSpot.row === 9
       && myCrateSpot.column === myPlayerSpot.column) {
       console.log('dont move!');
     } else {
@@ -126,7 +210,7 @@ window.addEventListener('keydown', function(e) {
       // MOVES DOWN
       myPlayerSpot.row ++;
 
-      if (myPlayerSpot.row === 10) {
+      if (myPlayerSpot.row === 11) {
         myPlayerSpot.row --;
       }
 
@@ -145,18 +229,27 @@ window.addEventListener('keydown', function(e) {
     if (myCrateSpot.row === myHoleSpot.row
        && myCrateSpot.column === myHoleSpot.column) {
       currentHolePosition.style.backgroundColor = 'black';
-      myCrateSpot.row -= myHoleSpot.row;
-      myCrateSpot.column -= myHoleSpot.column;
+      myCrateSpot.row -= (myHoleSpot.row - 2);
+      myCrateSpot.column -= (myHoleSpot.column - 2);
       currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
       currentCratePosition.style.backgroundColor = 'green';
+      updateScore();
+    }
+
+
+    if (myPlayerSpot.row === myHoleSpot.row
+       && myPlayerSpot.column === myHoleSpot.column) {
+      myPlayerSpot.row --;
+      moveColor();
+      currentHolePosition.style.backgroundColor = 'black';
     }
 
 
   } else if (e.which === 37) {
-    event.preventdefault;
+    e.preventDefault();
 
-    if (myCrateSpot.column === 0
-      && myPlayerSpot.column === 1
+    if (myCrateSpot.column === 1
+      && myPlayerSpot.column === 2
       && myCrateSpot.row === myPlayerSpot.row) {
       console.log('dont move!');
     } else {
@@ -164,7 +257,7 @@ window.addEventListener('keydown', function(e) {
       // MOVES LEFT
       myPlayerSpot.column --;
 
-      if (myPlayerSpot.column === -1) {
+      if (myPlayerSpot.column === 0) {
         myPlayerSpot.column ++;
       }
 
@@ -183,18 +276,26 @@ window.addEventListener('keydown', function(e) {
     if (myCrateSpot.row === myHoleSpot.row
        && myCrateSpot.column === myHoleSpot.column) {
       currentHolePosition.style.backgroundColor = 'black';
-      myCrateSpot.row -= myHoleSpot.row;
-      myCrateSpot.column -= myHoleSpot.column;
+      myCrateSpot.row -= (myHoleSpot.row - 2);
+      myCrateSpot.column -= (myHoleSpot.column - 2);
       currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
       currentCratePosition.style.backgroundColor = 'green';
+      updateScore();
+    }
+
+    if (myPlayerSpot.row === myHoleSpot.row
+       && myPlayerSpot.column === myHoleSpot.column) {
+      myPlayerSpot.column ++;
+      moveColor();
+      currentHolePosition.style.backgroundColor = 'black';
     }
 
 
   } else if (e.which === 39) {
-    event.preventdefault;
+    e.preventDefault();
 
-    if (myCrateSpot.column === 9
-      && myPlayerSpot.column === 8
+    if (myCrateSpot.column === 10
+      && myPlayerSpot.column === 9
       && myCrateSpot.row === myPlayerSpot.row) {
       console.log('dont move!');
     } else {
@@ -202,7 +303,7 @@ window.addEventListener('keydown', function(e) {
       // MOVES RIGHT
       myPlayerSpot.column ++;
 
-      if (myPlayerSpot.column === 10) {
+      if (myPlayerSpot.column === 11) {
         myPlayerSpot.column --;
       }
 
@@ -221,10 +322,18 @@ window.addEventListener('keydown', function(e) {
     if (myCrateSpot.row === myHoleSpot.row
        && myCrateSpot.column === myHoleSpot.column) {
       currentHolePosition.style.backgroundColor = 'black';
-      myCrateSpot.row -= myHoleSpot.row;
-      myCrateSpot.column -= myHoleSpot.column;
+      myCrateSpot.row -= (myHoleSpot.row - 2);
+      myCrateSpot.column -= (myHoleSpot.column - 2);
       currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
       currentCratePosition.style.backgroundColor = 'green';
+      updateScore();
+    }
+
+    if (myPlayerSpot.row === myHoleSpot.row
+       && myPlayerSpot.column === myHoleSpot.column) {
+      myPlayerSpot.column --;
+      moveColor();
+      currentHolePosition.style.backgroundColor = 'black';
     }
 
   }

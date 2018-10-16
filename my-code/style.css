@@ -1,16 +1,28 @@
+body {
+  display: flex;
+  flex-wrap: wrap;
+  background-image: url("images/purple_floor.jpg");
+}
+
 #container {
 	top: 30px;
 	font-size: 0;
-	height:600px;
-	width:600px;
+	height:700px;
+	width:700px;
+  padding-right: 10px;
 }
+
+/* #container div{
+  background-image: url("images/purple_floor.jpg");
+  background-size: cover;
+} */
 
 .grid {
 	border:none;
 	outline:1px solid #000;
 	display:inline-block;
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   background-color: white;
 }
 
@@ -20,4 +32,22 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+h1 {
+  font-size: 50px;
+  text-align: right;
+  color: 'yellow';
+}
+
+
+.wall {
+  background-image: url("images/cartoon_wall.jpg");
+  background-size: cover;
+}
+
+
+.crate {
+  background-image: url("images/crate.jpg");
+  background-size: cover;
 }
