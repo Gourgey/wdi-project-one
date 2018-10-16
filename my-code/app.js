@@ -32,33 +32,15 @@ const wallRowsBottom = 11;
 const wallColumnsLeft = 0;
 const wallColumnsRight = 11;
 
+//select all edge rows and columns
+const wallPosition = document.querySelectorAll(`div[rowid="${wallRowsTop}"],[rowid="${wallRowsBottom}"],
+[columnid="${wallColumnsLeft}"],[columnid="${wallColumnsRight}"]`);
 
-// const rest = document.querySelectorAll
-const wallRowTop = document.querySelectorAll(`div[rowid="${wallRowsTop}"]`);
-const wallRowBottom = document.querySelectorAll(`div[rowid="${wallRowsBottom}"]`);
-const wallColumnLeft = document.querySelectorAll(`div[columnid="${wallColumnsLeft}"]`);
-const wallColumnRight = document.querySelectorAll(`div[columnid="${wallColumnsRight}"]`);
+// use wallPosition to cycle through each edge row and column, adding the wall class to each.
+wallPosition.forEach(element => {
+  element.classList.add('wall');
+});
 
-for (let i = 0; i < wallRowTop.length; i++) {
-  wallRowTop[i].classList.add('wall');
-}
-
-for (let i = 0; i < wallRowBottom.length; i++) {
-  wallRowBottom[i].classList.add('wall');
-}
-
-for (let i = 0; i < wallColumnLeft.length; i++) {
-  wallColumnLeft[i].classList.add('wall');
-}
-
-for (let i = 0; i < wallColumnRight.length; i++) {
-  wallColumnRight[i].classList.add('wall');
-}
-
-
-// for (let i = 0; i < rest.length; i++) {
-//   rest[i].classList.add('wall');
-// }
 
 
 
@@ -84,7 +66,8 @@ class Crate {
 
 const crates = [
   new Crate(5, 6),
-  new Crate(2, 3)
+  new Crate(2, 3),
+  new Crate(4, 4)
 ];
 
 
@@ -113,21 +96,22 @@ currentCharacterPosition.classList.add('active');
 
 // get the div for the crate, colour it green and make it a let so you can reassign the let to another div.
 let currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-currentCratePosition.classList.add('active');
+currentCratePosition.classList.add('crate');
 
-// get the div for the hole and colour it black.
+// get the div for the hole and give it class of hole.
 const currentHolePosition = document.querySelector(`div[rowid="${myHoleSpot.row}"][columnid="${myHoleSpot.column}"]`);
-currentHolePosition.style.backgroundColor = 'black';
+currentHolePosition.classList.add('hole');
 
 
 
 function moveColor() {
-  // gets rid of current square colour then by reassigning takes new vairable values (from keydown listener) to make a new div colour with red.
-  currentCharacterPosition.style.backgroundColor = 'white';
+  // gets rid of current square class then by reassigning takes new vairable values (from keydown listener) to make a new div with class active.
+  // also takes away the crate class after moving to a new square as that class will be left by the crate being moved.
   currentCharacterPosition.classList.remove('active');
+  currentCharacterPosition.classList.remove('crate');
   currentCharacterPosition = document.querySelector(`div[rowid="${myPlayerSpot.row}"][columnid="${myPlayerSpot.column}"]`);
+  currentCharacterPosition.classList.remove('crate');
   currentCharacterPosition.classList.add('active');
-  currentCharacterPosition.style.backgroundColor = 'white';
 }
 
 
@@ -172,19 +156,19 @@ window.addEventListener('keydown', function(e) {
 
         // updates position of crate by reassigning the var with the updated spot row and columns -- don't need to turn this square white as the charater will take over then to white when it leaves.
         currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-        currentCratePosition.style.backgroundColor = 'green';
+        currentCratePosition.classList.add('crate');
       }
     }
 
-    // if the crate position === the hole position - make the position black to cover the green, change the crate vars to 0, 0 by
+    // if the crate position === the hole position - make the class hole to cover the image just left on it, change the crate vars to 0, 0 by
     // ----- minusing the hol vars then reassign the crate position and colour so it shows up at the top right
     if (myCrateSpot.row === myHoleSpot.row
        && myCrateSpot.column === myHoleSpot.column) {
-      currentHolePosition.style.backgroundColor = 'black';
+      currentHolePosition.classList.remove('crate');
       myCrateSpot.row -= (myHoleSpot.row - 2);
       myCrateSpot.column -= (myHoleSpot.column - 2);
       currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-      currentCratePosition.style.backgroundColor = 'green';
+      currentCratePosition.classList.add('crate');
       updateScore();
     }
 
@@ -194,7 +178,7 @@ window.addEventListener('keydown', function(e) {
        && myPlayerSpot.column === myHoleSpot.column) {
       myPlayerSpot.row ++;
       moveColor();
-      currentHolePosition.style.backgroundColor = 'black';
+      currentHolePosition.classList.remove('active');
     }
 
 
@@ -222,17 +206,17 @@ window.addEventListener('keydown', function(e) {
         myCrateSpot.row ++;
 
         currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-        currentCratePosition.style.backgroundColor = 'green';
+        currentCratePosition.classList.add('crate');
       }
     }
 
     if (myCrateSpot.row === myHoleSpot.row
        && myCrateSpot.column === myHoleSpot.column) {
-      currentHolePosition.style.backgroundColor = 'black';
+      currentHolePosition.classList.remove('crate');
       myCrateSpot.row -= (myHoleSpot.row - 2);
       myCrateSpot.column -= (myHoleSpot.column - 2);
       currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-      currentCratePosition.style.backgroundColor = 'green';
+      currentCratePosition.classList.add('crate');
       updateScore();
     }
 
@@ -241,7 +225,7 @@ window.addEventListener('keydown', function(e) {
        && myPlayerSpot.column === myHoleSpot.column) {
       myPlayerSpot.row --;
       moveColor();
-      currentHolePosition.style.backgroundColor = 'black';
+      currentHolePosition.classList.remove('active');
     }
 
 
@@ -269,17 +253,17 @@ window.addEventListener('keydown', function(e) {
         myCrateSpot.column --;
 
         currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-        currentCratePosition.style.backgroundColor = 'green';
+        currentCratePosition.classList.add('crate');
       }
     }
 
     if (myCrateSpot.row === myHoleSpot.row
        && myCrateSpot.column === myHoleSpot.column) {
-      currentHolePosition.style.backgroundColor = 'black';
+      currentHolePosition.classList.remove('crate');
       myCrateSpot.row -= (myHoleSpot.row - 2);
       myCrateSpot.column -= (myHoleSpot.column - 2);
       currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-      currentCratePosition.style.backgroundColor = 'green';
+      currentCratePosition.classList.add('crate');
       updateScore();
     }
 
@@ -287,7 +271,7 @@ window.addEventListener('keydown', function(e) {
        && myPlayerSpot.column === myHoleSpot.column) {
       myPlayerSpot.column ++;
       moveColor();
-      currentHolePosition.style.backgroundColor = 'black';
+      currentHolePosition.classList.remove('active');
     }
 
 
@@ -315,17 +299,17 @@ window.addEventListener('keydown', function(e) {
         myCrateSpot.column ++;
 
         currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-        currentCratePosition.style.backgroundColor = 'green';
+        currentCratePosition.classList.add('crate');
       }
     }
 
     if (myCrateSpot.row === myHoleSpot.row
        && myCrateSpot.column === myHoleSpot.column) {
-      currentHolePosition.style.backgroundColor = 'black';
+      currentHolePosition.classList.remove('crate');
       myCrateSpot.row -= (myHoleSpot.row - 2);
       myCrateSpot.column -= (myHoleSpot.column - 2);
       currentCratePosition = document.querySelector(`div[rowid="${myCrateSpot.row}"][columnid="${myCrateSpot.column}"]`);
-      currentCratePosition.style.backgroundColor = 'green';
+      currentCratePosition.classList.add('crate');
       updateScore();
     }
 
@@ -333,7 +317,7 @@ window.addEventListener('keydown', function(e) {
        && myPlayerSpot.column === myHoleSpot.column) {
       myPlayerSpot.column --;
       moveColor();
-      currentHolePosition.style.backgroundColor = 'black';
+      currentHolePosition.classList.remove('active');
     }
 
   }

@@ -1,7 +1,10 @@
 body {
   display: flex;
   flex-wrap: wrap;
-  background-image: url("images/purple_floor.jpg");
+  justify-content: center;
+  background-image: url("images/diamond.jpg");
+  background-repeat: repeat;
+
 }
 
 #container {
@@ -9,13 +12,7 @@ body {
 	font-size: 0;
 	height:700px;
 	width:700px;
-  padding-right: 10px;
 }
-
-/* #container div{
-  background-image: url("images/purple_floor.jpg");
-  background-size: cover;
-} */
 
 .grid {
 	border:none;
@@ -23,31 +20,37 @@ body {
 	display:inline-block;
   width: 55px;
   height: 55px;
-  background-color: white;
+  background-image: url("images/floor.png");
+  background-size: cover;
 }
 
 
 .active {
-  background-image: url("images/droopy_detective.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
+  background-image: url("images/head.jpeg");
+  background-size: cover;
+  /* background-repeat: no-repeat; */
   background-position: center;
 }
 
 h1 {
   font-size: 50px;
   text-align: right;
-  color: 'yellow';
+  color: yellow;
 }
 
 
 .wall {
-  background-image: url("images/cartoon_wall.jpg");
+  background-image: url("images/red_wall.jpg");
   background-size: cover;
 }
 
 
 .crate {
-  background-image: url("images/crate.jpg");
+  background-image: url("images/crate.png");
+  background-size: cover;
+}
+
+.hole {
+  background-image: url("images/black_hole2.jpg");
   background-size: cover;
 }
