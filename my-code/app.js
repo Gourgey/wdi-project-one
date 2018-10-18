@@ -251,16 +251,6 @@ wallPosition.forEach(element => {
 });
 
 
-// function retractPlayerMovingOntoHole() {
-//   if (myPlayerSpot.row === myHoleSpot.row
-//     && myPlayerSpot.column === myHoleSpot.column) {
-//     myPlayerSpot.row ++;
-//     moveColor();
-//     currentHolePosition.classList.remove('active');
-//   }
-// }
-
-
 // for tracking the the hole crates and player - make a variable that you use in your dom.
 // get the div for the character with the following variables then change the colour to red and give it a class of active for the image.
 players.forEach(player => {
@@ -297,11 +287,12 @@ function handleMovementRight() {
 }
 
 
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
 
-getRandomArbitrary(2, 4)
+
+
+function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 // KEYPRESSING FUNCTIONS
 window.addEventListener('keydown', function(e) {
@@ -309,13 +300,18 @@ window.addEventListener('keydown', function(e) {
     e.preventDefault();
     handleMovementUp();
 
+
+    const randomise = getRandomArbitrary(2, 9);
+
     crates.forEach(crate => {
       if (holes[0].row === crate.row && holes[0].column === crate.column) {
         console.log('Done! -- Not Quite');
-        crate.row -= 5;
-        crate.column -= 5;
+        crate.row = randomise;
+        crate.column = randomise;
         crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
         crate.domLocation.classList.add('crate');
+        updateScore();
+        startTimer();
       }
     });
 
@@ -323,13 +319,16 @@ window.addEventListener('keydown', function(e) {
     e.preventDefault();
     handleMovementDown();
 
+    const randomise = getRandomArbitrary(2, 9);
+
     crates.forEach(crate => {
       if (holes[0].row === crate.row && holes[0].column === crate.column) {
         console.log('Done! -- Not Quite');
-        crate.row -= 5;
-        crate.column -= 5;
+        crate.row = randomise;
+        crate.column = randomise;
         crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
         crate.domLocation.classList.add('crate');
+        updateScore();
       }
     });
 
@@ -337,13 +336,16 @@ window.addEventListener('keydown', function(e) {
     e.preventDefault();
     handleMovementLeft();
 
+    const randomise = getRandomArbitrary(2, 9);
+
     crates.forEach(crate => {
       if (holes[0].row === crate.row && holes[0].column === crate.column) {
         console.log('Done! -- Not Quite');
-        crate.row -= 5;
-        crate.column -= 5;
+        crate.row = randomise;
+        crate.column = randomise;
         crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
         crate.domLocation.classList.add('crate');
+        updateScore();
       }
     });
 
@@ -351,13 +353,16 @@ window.addEventListener('keydown', function(e) {
     e.preventDefault();
     handleMovementRight();
 
+    const randomise = getRandomArbitrary(2, 9);
+
     crates.forEach(crate => {
       if (holes[0].row === crate.row && holes[0].column === crate.column) {
         console.log('Done! -- Not Quite');
-        crate.row -= 5;
-        crate.column -= 5;
+        crate.row = randomise;
+        crate.column = randomise;
         crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
         crate.domLocation.classList.add('crate');
+        updateScore();
       }
     });
 
@@ -367,6 +372,7 @@ window.addEventListener('keydown', function(e) {
 
 
 
+// scoreBoard.addEventListener('click', startTimer());
 
 
 
@@ -375,33 +381,30 @@ window.addEventListener('keydown', function(e) {
 
 
 
+function startTimer() {
 
-//
-// function startTimer() {
-//
-//   function countDown() {
-//   // myInterval =
-//     timer.textContent = myTimer;
-//     myTimer --;
-//     if (myTimer === -1) {
-//       clearInterval(myInterval);
-//       console.log('Game Over');
-//     }
-//   }
-//
-//   myInterval = setInterval(countDown, 1000);
-// }
+  function countDown() {
+    let myInterval;
+    let myTimer = 20;
+    const timer = document.getElementById('timer');
+    timer.textContent = myTimer;
+    myTimer --;
+    if (myTimer === -1) {
+      clearInterval(myInterval);
+      console.log('Game Over');
+    }
+  }
 
-
+  myInterval = setInterval(countDown, 1000);
+}
 
 
-// const timer = document.getElementById('timer');
+
+
 // const startButton = document.getElementById('startMenuButton');
 // const startScreen = document.getElementById('#startMenu');
 //
 // // score var and timing vars
-// let myTimer = 3;
-// let myInterval;
 //
 // // game start and end screen
 // const menu = 1;

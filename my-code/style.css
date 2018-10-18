@@ -39,7 +39,7 @@ button {
 	font-size: 0;
 	height:700px;
 	width:700px;
-  /* display: none; */
+  /* display: flex; */
 }
 
 .grid {
