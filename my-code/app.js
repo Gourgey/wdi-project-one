@@ -329,6 +329,7 @@ window.addEventListener('keydown', function(e) {
         crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
         crate.domLocation.classList.add('crate');
         updateScore();
+        startTimer();
       }
     });
 
@@ -346,6 +347,7 @@ window.addEventListener('keydown', function(e) {
         crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
         crate.domLocation.classList.add('crate');
         updateScore();
+        startTimer();
       }
     });
 
@@ -363,6 +365,7 @@ window.addEventListener('keydown', function(e) {
         crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
         crate.domLocation.classList.add('crate');
         updateScore();
+        startTimer();
       }
     });
 
@@ -382,16 +385,17 @@ window.addEventListener('keydown', function(e) {
 
 
 function startTimer() {
+  let myInterval;
+  let myTimer = 29;
+  const timer = document.getElementById('timer');
 
   function countDown() {
-    let myInterval;
-    let myTimer = 20;
-    const timer = document.getElementById('timer');
     timer.textContent = myTimer;
     myTimer --;
     if (myTimer === -1) {
       clearInterval(myInterval);
       console.log('Game Over');
+      alert('Game Over');
     }
   }
 

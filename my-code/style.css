@@ -66,6 +66,12 @@ h1 {
   color: red;
 }
 
+p {
+  /* background-color: red; */
+  font-size: 20px;
+  font-weight: bold;
+  color: green;
+}
 
 .wall {
   background-image: url("images/red_wall.jpg");
