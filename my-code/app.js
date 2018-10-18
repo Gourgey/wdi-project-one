@@ -38,15 +38,10 @@ class Crate {
     this.moveCrateTo(this.row, this.column + 1);
   }
 
-  stopCrateMovingOverEdge() {
-    if (this.row === 1 && myPlayerSpot.row === 2
-      && this.column === myPlayerSpot.column) {
-      console.log('dont move!');
-      return false;
-    } else {
-      return true;
-    }
+  moveCrateBack() {
+    this.returnsCrateBack(this.row -5, this.column);
   }
+
 
   draw() {
     this.domLocation = document.querySelector(`div[rowid="${this.row}"][columnid="${this.column}"]`);
@@ -58,17 +53,38 @@ class Crate {
     this.domLocation.classList.remove('crate');
   }
 
-  returnCrateToPositionAndScore() {
-    if (this.row === myHoleSpot.row
-      && this.column === myHoleSpot.column) {
-      currentHolePosition.classList.remove('crate');
-      this.row -= (myHoleSpot.row - 2);
-      this.column -= (myHoleSpot.column - 2);
-      this.domLocation = document.querySelector(`div[rowid="${this.row}"][columnid="${this.column}"]`);
-      this.domLocation.classList.add('crate');
-      updateScore();
+
+
+
+  cratesAreOnHole(row, column) {
+    const blockingHoles = holesAtPosition(row, column);
+    const isOnHole = (blockingHoles.length > 0);
+    return isOnHole;
+  }
+
+  returnsCrateBack(row, column) {
+    if (this.cratesAreOnHole(row, column)) {
+      this.undraw();
+      this.row = row;
+      this.column = column;
+      this.draw();
     }
   }
+
+
+  // returnsCrateToPositionAndScore(row, column) {
+  //   if (this.cratesAreOnHole(row, column)) {
+  //     console.log('CHANGE PLACES!');
+  //     // holes[0].domLocation.classList.remove('crate');
+  //     // this.row -= (holes[0].row - 2);
+  //     // this.column -= (holes[0].column - 2);
+  //     // this.domLocation = document.querySelector(`div[rowid="${this.row}"][columnid="${this.column}"]`);
+  //     // this.domLocation.classList.add('crate');
+  //     // updateScore();
+  //   }
+  // }
+
+
 }
 
 class Player {
@@ -81,9 +97,11 @@ class Player {
 
   playerCanMoveTo(row, column) {
     const notAtBorder = row > 0 && row < wallRowsBottom && column > 0 && column < wallColumnsRight;
-    const cratesAtPosition = crates.filter(crate => crate.row === row && crate.column === column);
-    const noCratesAtPosition = (cratesAtPosition.length === 0);
-    return notAtBorder && noCratesAtPosition;
+    const blockingCrates = cratesAtPosition(row, column);
+    const noCratesAtPosition = (blockingCrates.length === 0);
+    const blockingHoles = holesAtPosition(row, column);
+    const noHolesAtPosition = (blockingHoles.length === 0);
+    return notAtBorder && noCratesAtPosition && noHolesAtPosition;
   }
 
   movePlayerTo(row, column) {
@@ -167,6 +185,11 @@ class Hole {
 function cratesAtPosition(row, column) {
   return crates.filter(crate => crate.row === row && crate.column === column);
 }
+
+function holesAtPosition(row, column) {
+  return holes.filter(hole => hole.row === row && hole.column === column);
+}
+
 // make a grid
 const myContainer = document.querySelector('#container');
 const scoreBoard = document.getElementById('myScore');
@@ -250,16 +273,15 @@ crates.forEach(crate => {
 });
 
 // get the div for the hole and give it class of hole.
-holes.forEach(crate => {
-  holes.domLocation.classList.add('hole');
+holes.forEach(hole => {
+  hole.domLocation.classList.add('hole');
 });
-const currentHolePosition = document.querySelector(`div[rowid="${myHoleSpot.row}"][columnid="${myHoleSpot.column}"]`);
-currentHolePosition.classList.add('hole');
 
 
 
 function handleMovementUp() {
   players[0].movePlayerUp();
+  // crates[0].returnsCrateToPositionAndScore();
 }
 
 function handleMovementDown() {
@@ -275,24 +297,70 @@ function handleMovementRight() {
 }
 
 
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+getRandomArbitrary(2, 4)
+
 // KEYPRESSING FUNCTIONS
 window.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowUp') {
     e.preventDefault();
     handleMovementUp();
 
+    crates.forEach(crate => {
+      if (holes[0].row === crate.row && holes[0].column === crate.column) {
+        console.log('Done! -- Not Quite');
+        crate.row -= 5;
+        crate.column -= 5;
+        crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
+        crate.domLocation.classList.add('crate');
+      }
+    });
+
   } else if (e.key === 'ArrowDown') {
     e.preventDefault();
     handleMovementDown();
+
+    crates.forEach(crate => {
+      if (holes[0].row === crate.row && holes[0].column === crate.column) {
+        console.log('Done! -- Not Quite');
+        crate.row -= 5;
+        crate.column -= 5;
+        crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
+        crate.domLocation.classList.add('crate');
+      }
+    });
 
   } else if (e.which === 37) {
     e.preventDefault();
     handleMovementLeft();
 
+    crates.forEach(crate => {
+      if (holes[0].row === crate.row && holes[0].column === crate.column) {
+        console.log('Done! -- Not Quite');
+        crate.row -= 5;
+        crate.column -= 5;
+        crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
+        crate.domLocation.classList.add('crate');
+      }
+    });
+
   } else if (e.which === 39) {
     e.preventDefault();
     handleMovementRight();
 
+    crates.forEach(crate => {
+      if (holes[0].row === crate.row && holes[0].column === crate.column) {
+        console.log('Done! -- Not Quite');
+        crate.row -= 5;
+        crate.column -= 5;
+        crate.domLocation = document.querySelector(`div[rowid="${crate.row}"][columnid="${crate.column}"]`);
+        crate.domLocation.classList.add('crate');
+      }
+    });
+
   }
 });
 
@@ -308,45 +376,44 @@ window.addEventListener('keydown', function(e) {
 
 
 
-
-function startTimer() {
-
-  function countDown() {
-  // myInterval =
-    timer.textContent = myTimer;
-    myTimer --;
-    if (myTimer === -1) {
-      clearInterval(myInterval);
-      console.log('Game Over');
-    }
-  }
-
-  myInterval = setInterval(countDown, 1000);
-}
-
-
-
-
-const timer = document.getElementById('timer');
-const startButton = document.getElementById('startMenuButton');
-const startScreen = document.getElementById('#startMenu');
-
-// score var and timing vars
-let myScore = 0;
-let myTimer = 3;
-let myInterval;
-
-// game start and end screen
-const menu = 1;
-const game = 2;
-let gameState = menu;
+//
+// function startTimer() {
+//
+//   function countDown() {
+//   // myInterval =
+//     timer.textContent = myTimer;
+//     myTimer --;
+//     if (myTimer === -1) {
+//       clearInterval(myInterval);
+//       console.log('Game Over');
+//     }
+//   }
+//
+//   myInterval = setInterval(countDown, 1000);
+// }
 
 
 
-startButton.addEventListener('click', function() {
-  gameState = game;
-  // needs to be in here for if to be read when click occurs
-  if (gameState === game) {
-    startScreen.style.display = 'none';
-  }
-});
+
+// const timer = document.getElementById('timer');
+// const startButton = document.getElementById('startMenuButton');
+// const startScreen = document.getElementById('#startMenu');
+//
+// // score var and timing vars
+// let myTimer = 3;
+// let myInterval;
+//
+// // game start and end screen
+// const menu = 1;
+// const game = 2;
+// let gameState = menu;
+//
+//
+//
+// startButton.addEventListener('click', function() {
+//   gameState = game;
+//   // needs to be in here for if to be read when click occurs
+//   if (gameState === game) {
+//     startScreen.style.display = 'none';
+//   }
+// });

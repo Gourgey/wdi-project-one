@@ -6,7 +6,7 @@ body {
   background-repeat: repeat;
 }
 
-#startMenu {
+/* #startMenu {
   display: flex;
   justify-content: center;
   text-align: center;
@@ -31,7 +31,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-}
+} */
 
 
 #container {
@@ -39,7 +39,7 @@ button {
 	font-size: 0;
 	height:700px;
 	width:700px;
-  display: none;
+  /* display: none; */
 }
 
 .grid {
