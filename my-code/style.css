@@ -1,0 +1,90 @@
+body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-image: url("images/diamond.jpg");
+  background-repeat: repeat;
+}
+
+/* #startMenu {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  background-color: green;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+button {
+  font-size: 150px;
+  color: yellow;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+#gameHolder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+} */
+
+
+#container {
+	top: 30px;
+	font-size: 0;
+	height:700px;
+	width:700px;
+  /* display: flex; */
+}
+
+.grid {
+	border:none;
+	outline:1px solid #000;
+	display:inline-block;
+  width: 55px;
+  height: 55px;
+  background-image: url("images/floor.png");
+  background-size: cover;
+}
+
+
+.active {
+  background-image: url("images/head.jpeg");
+  background-size: cover;
+  /* background-repeat: no-repeat; */
+  background-position: center;
+}
+
+h1 {
+  font-size: 50px;
+  text-align: right;
+  color: red;
+}
+
+p {
+  /* background-color: red; */
+  font-size: 20px;
+  font-weight: bold;
+  color: green;
+}
+
+.wall {
+  background-image: url("images/red_wall.jpg");
+  background-size: cover;
+}
+
+
+.crate {
+  background-image: url("images/crate.png");
+  background-size: cover;
+}
+
+.hole {
+  background-image: url("images/black_hole2.jpg");
+  background-size: cover;
+}
